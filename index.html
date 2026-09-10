@@ -1,0 +1,501 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>个人简历 — 黄博文</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg: #f7f8fb;
+      --card: #ffffff;
+      --muted: #6b7280;
+      --accent: #2563eb;
+      --glass: rgba(255,255,255,0.6);
+      --radius: 12px;
+      --shadow: 0 6px 18px rgba(16,24,40,0.08);
+      --container-width: 1000px;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color-scheme: light;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background:linear-gradient(180deg,var(--bg),#fff);
+      color:#0f172a;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.45;
+      padding:32px 20px;
+      display:flex;
+      justify-content:center;
+      font-size:16px;
+    }
+
+    .wrap{
+      width:100%;
+      max-width:var(--container-width);
+      display:grid;
+      grid-template-columns: 320px 1fr;
+      gap:28px;
+      align-items:start;
+    }
+
+    /* Side card */
+    aside.sidebar{
+      position:sticky;
+      top:32px;
+      align-self:start;
+      background:linear-gradient(180deg,var(--card),#fbfdff);
+      border-radius:var(--radius);
+      padding:28px;
+      box-shadow:var(--shadow);
+      min-height:220px;
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+    }
+
+    .avatar{
+      width:84px;
+      height:84px;
+      border-radius:16px;
+      overflow:hidden;
+      flex-shrink:0;
+      background:linear-gradient(135deg,#e6f0ff,#f3f7ff);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      color:var(--accent);
+      font-size:28px;
+      box-shadow: 0 6px 18px rgba(37,99,235,0.08);
+    }
+
+    h1.name{margin:0;font-size:20px;letter-spacing:0.2px}
+    p.role{margin:0;color:var(--muted);font-size:14px}
+    .muted{color:var(--muted);font-size:14px}
+    .contact-list{display:flex;flex-direction:column;gap:8px;margin-top:6px}
+    .contact-item{display:flex;gap:10px;align-items:center;color:var(--muted);font-size:14px}
+    .contact-item button{background:none;border:0;color:var(--accent);cursor:pointer;padding:6px;border-radius:8px}
+    .pill{display:inline-flex;gap:8px;align-items:center;padding:8px 12px;border-radius:999px;background:rgba(37,99,235,0.08);color:var(--accent);font-weight:600;font-size:13px}
+
+    nav.side-nav{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      margin-top:10px;
+    }
+    nav.side-nav a{
+      text-decoration:none;color:var(--muted);
+      padding:10px;border-radius:10px;display:flex;gap:10px;align-items:center;font-weight:600;
+    }
+    nav.side-nav a.active{background:rgba(37,99,235,0.06);color:var(--accent);box-shadow:inset 0 0 0 1px rgba(37,99,235,0.02)}
+    nav.side-nav a:hover{background:rgba(16,24,40,0.03)}
+
+    /* Main content */
+    main.content{
+      min-height: calc(100vh - 64px);
+      display:flex;
+      flex-direction:column;
+      gap:28px;
+    }
+
+    section.card{
+      background:var(--card);
+      border-radius:var(--radius);
+      padding:24px;
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      transform:translateY(12px);
+      opacity:0;
+      transition:all 520ms cubic-bezier(.2,.9,.25,1);
+    }
+    section.card.in-view{transform:none;opacity:1}
+
+    header.hero{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:20px;
+      padding-bottom:8px;
+    }
+    .summary{color:var(--muted);margin-top:8px}
+    .actions{display:flex;gap:10px;align-items:center}
+    .btn{
+      background:var(--accent);
+      color:white;padding:10px 14px;border-radius:10px;border:0;cursor:pointer;font-weight:600;
+      box-shadow: 0 6px 18px rgba(37,99,235,0.12);
+    }
+    .ghost{background:transparent;border:1px solid rgba(15,23,42,0.06);color:var(--muted);padding:8px 12px}
+
+    /* Experience timeline */
+    .timeline{display:flex;flex-direction:column;gap:14px}
+    .exp{
+      display:grid;
+      grid-template-columns: 140px 1fr;
+      gap:12px;
+      align-items:start;
+      padding:12px;border-radius:10px;
+      transition:transform .22s ease, box-shadow .22s ease;
+    }
+    .exp:hover{transform:translateY(-6px);box-shadow:0 10px 30px rgba(2,6,23,0.06)}
+    .exp .period{color:var(--muted);font-size:14px}
+    .exp .body h4{margin:0 0 6px 0}
+    .exp .body p{margin:0;color:var(--muted);font-size:14px}
+
+    /* Skills with tabs */
+    .skills-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+    .tabs{display:flex;gap:8px}
+    .tab{
+      padding:8px 12px;border-radius:999px;background:transparent;border:1px solid rgba(15,23,42,0.04);cursor:pointer;font-weight:600;color:var(--muted)
+    }
+    .tab.active{background:rgba(37,99,235,0.06);color:var(--accent)}
+    .skill-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+    .skill-pill{background:linear-gradient(180deg,#fff,#fbfdff);padding:12px;border-radius:12px;border:1px solid rgba(15,23,42,0.03);display:flex;flex-direction:column;gap:8px}
+    .skill-name{display:flex;justify-content:space-between;gap:8px;font-weight:600}
+    .bar{height:8px;background:rgba(2,6,23,0.06);border-radius:999px;overflow:hidden}
+    .bar > i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),#8b5cf6);border-radius:999px;width:0;transition:width 700ms cubic-bezier(.2,.9,.25,1)}
+
+    /* Contact */
+    .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .contact-card{padding:12px;border-radius:10px;background:linear-gradient(180deg,#fff,#fbfdff);border:1px solid rgba(15,23,42,0.03)}
+    .copy{background:transparent;border:0;color:var(--accent);cursor:pointer;font-weight:700}
+
+    /* back to top */
+    .to-top{
+      position:fixed;right:20px;bottom:20px;background:var(--accent);color:white;padding:12px;border-radius:12px;border:0;box-shadow:0 10px 24px rgba(37,99,235,0.14);cursor:pointer;display:none;z-index:1000
+    }
+
+    /* small screens */
+    @media (max-width:900px){
+      .wrap{grid-template-columns:1fr;gap:18px;padding-bottom:40px}
+      aside.sidebar{position:relative;top:0;display:flex;flex-direction:row;align-items:center;gap:16px;padding:16px}
+      nav.side-nav{flex-direction:row;overflow:auto;padding-top:6px}
+      .contact-grid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <aside class="sidebar" aria-label="侧边信息">
+      <div style="display:flex;gap:12px;align-items:center">
+        <div class="avatar" aria-hidden="true">HB</div>
+        <div style="flex:1">
+          <h1 class="name">黄博文</h1>
+          <p class="role">前端工程师 · 视觉与交互</p>
+          <div style="margin-top:8px"><span class="pill">可在职/远程</span></div>
+        </div>
+      </div>
+
+      <p class="muted" style="margin-top:6px">以用户为中心的交互设计与工程实现，关注性能与可维护性，擅长构建现代网页应用与组件化系统。</p>
+
+      <div class="contact-list" style="margin-top:8px">
+        <div class="contact-item"><svg width="16" height="16" viewBox="0 0 24 24" style="opacity:.6"><path fill="currentColor" d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-4.4 0-8 3.6-8 8h2c0-3.3 2.7-6 6-6s6 2.7 6 6h2c0-4.4-3.6-8-8-8z"/></svg> 上海 · 中国</div>
+        <div class="contact-item"><svg width="16" height="16" viewBox="0 0 24 24" style="opacity:.6"><path fill="currentColor" d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zM4 8l8 5 8-5v10H4V8z"/></svg> <button onclick="copyText('mailto:huangbowen@example.com')" title="复制邮箱">huangbowen@example.com</button></div>
+        <div class="contact-item"><svg width="16" height="16" viewBox="0 0 24 24" style="opacity:.6"><path fill="currentColor" d="M6.6 10.2c1.1 2.1 2.9 3.9 5 5 1.1.6 2.5.4 3.3-.4l1.8-1.8c.5-.5.5-1.3.1-1.9l-2.1-2.8c-.4-.6-1.1-.8-1.8-.6l-1.6.6c-.4.2-.9.1-1.2-.2L8 7.2c-.4-.4-1-.5-1.5-.2L4.6 8.6c-.7.4-.9 1.2-.6 1.9l2.6 5z"/></svg> <span>+86 138 0000 0000</span></div>
+      </div>
+
+      <nav class="side-nav" aria-label="页面导航" style="margin-top:6px">
+        <a href="#about" class="nav-link active" data-target="about">关于</a>
+        <a href="#education" class="nav-link" data-target="education">教育</a>
+        <a href="#experience" class="nav-link" data-target="experience">经历</a>
+        <a href="#skills" class="nav-link" data-target="skills">技能</a>
+        <a href="#contact" class="nav-link" data-target="contact">联系方式</a>
+      </nav>
+    </aside>
+
+    <main class="content" id="main">
+      <!-- Hero / About -->
+      <section id="about" class="card in-view">
+        <header class="hero">
+          <div>
+            <h2 style="margin:0">关于我</h2>
+            <p class="summary">你好，我是黄博文，一名前端工程师 & 交互设计师，擅长将设计与工程结合，打造流畅、可维护的用户体验。</p>
+          </div>
+          <div class="actions">
+            <button class="btn" onclick="window.location.href='#contact'">联系我</button>
+            <button class="ghost" onclick="downloadPDF()" title="下载简历（示例）">下载 PDF</button>
+          </div>
+        </header>
+
+        <div style="margin-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div style="padding:12px;border-radius:10px;background:linear-gradient(180deg,#fff,#fbfdff);border:1px solid rgba(15,23,42,0.03)">
+            <h4 style="margin:0 0 8px 0">核心信息</h4>
+            <ul style="margin:0;padding-left:18px;color:var(--muted)">
+              <li>15年以上前端/交互设计经验</li>
+              <li>熟悉 React / Vue / TypeScript / CSS3</li>
+              <li>热衷于性能优化和组件化设计</li>
+            </ul>
+          </div>
+          <div style="padding:12px;border-radius:10px;background:linear-gradient(180deg,#fff,#fbfdff);border:1px solid rgba(15,23,42,0.03)">
+            <h4 style="margin:0 0 8px 0">个人宣言</h4>
+            <p class="muted" style="margin:0">我相信简洁的界面、清晰的交互和扎实的工程能力，能够让产品更可靠、团队更高效。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Education -->
+      <section id="education" class="card" data-animate>
+        <h3 style="margin-top:0">教育背景</h3>
+        <div class="timeline" style="margin-top:12px">
+          <div class="exp">
+            <div class="period">2010 — 2014</div>
+            <div class="body">
+              <h4>复旦大学 • 信息管理与信息系统</h4>
+              <p class="muted">本科 — 主修信息系统与交互设计，参与多项校内产品设计与开发项目。</p>
+            </div>
+          </div>
+
+          <div class="exp">
+            <div class="period">2014 — 2016</div>
+            <div class="body">
+              <h4>交互设计进修</h4>
+              <p class="muted">参加多场设计训练营与线上课程，深化交互原型与用户研究方法。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Experience -->
+      <section id="experience" class="card" data-animate>
+        <h3 style="margin-top:0">工作经历</h3>
+        <div class="timeline" style="margin-top:12px">
+          <div class="exp">
+            <div class="period">2020 — 现在</div>
+            <div class="body">
+              <h4>某科技公司 • 高级前端工程师</h4>
+              <p class="muted">负责核心 Web 产品的架构规划与组件库建设，推动性能优化和可访问性改进。</p>
+            </div>
+          </div>
+
+          <div class="exp">
+            <div class="period">2016 — 2020</div>
+            <div class="body">
+              <h4>某互联网公司 • 前端工程师</h4>
+              <p class="muted">参与多个大型项目，从零实现响应式组件、状态管理与持续集成流程。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Skills -->
+      <section id="skills" class="card" data-animate>
+        <div class="skills-top">
+          <h3 style="margin:0">技能专长</h3>
+          <div class="tabs" role="tablist" aria-label="技能分类">
+            <button class="tab active" data-tab="frontend">前端</button>
+            <button class="tab" data-tab="design">设计</button>
+            <button class="tab" data-tab="tooling">工具链</button>
+          </div>
+        </div>
+
+        <div id="skills-content">
+          <div class="skill-grid" data-panel="frontend">
+            <div class="skill-pill">
+              <div class="skill-name"><span>JavaScript / TypeScript</span><span>95%</span></div>
+              <div class="bar"><i style="width:95%"></i></div>
+              <div class="muted" style="font-size:13px">熟练掌握 ES6+、TypeScript 类型抽象与大型前端工程架构。</div>
+            </div>
+
+            <div class="skill-pill">
+              <div class="skill-name"><span>React / Vue</span><span>90%</span></div>
+              <div class="bar"><i style="width:90%"></i></div>
+              <div class="muted" style="font-size:13px">组件化、Hooks/Composition API、SSR 与性能优化实践。</div>
+            </div>
+
+            <div class="skill-pill">
+              <div class="skill-name"><span>CSS / 布局 / 动画</span><span>92%</span></div>
+              <div class="bar"><i style="width:92%"></i></div>
+              <div class="muted" style="font-size:13px">响应式布局、现代 CSS（Grid / Flex），动画与可访问性。</div>
+            </div>
+          </div>
+
+          <div class="skill-grid" data-panel="design" style="display:none">
+            <div class="skill-pill">
+              <div class="skill-name"><span>交互设计</span><span>90%</span></div>
+              <div class="bar"><i style="width:90%"></i></div>
+              <div class="muted" style="font-size:13px">用户流程、低/高保真原型与用户测试。</div>
+            </div>
+
+            <div class="skill-pill">
+              <div class="skill-name"><span>视觉设计</span><span>85%</span></div>
+              <div class="bar"><i style="width:85%"></i></div>
+              <div class="muted" style="font-size:13px">配色、版式与设计系统建立。</div>
+            </div>
+          </div>
+
+          <div class="skill-grid" data-panel="tooling" style="display:none">
+            <div class="skill-pill">
+              <div class="skill-name"><span>Build / CI</span><span>88%</span></div>
+              <div class="bar"><i style="width:88%"></i></div>
+              <div class="muted" style="font-size:13px">Webpack/Rollup/Vite、GitHub Actions。</div>
+            </div>
+
+            <div class="skill-pill">
+              <div class="skill-name"><span>测试 / 质量</span><span>80%</span></div>
+              <div class="bar"><i style="width:80%"></i></div>
+              <div class="muted" style="font-size:13px">单测/集成测试与可观测性实践。</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact -->
+      <section id="contact" class="card" data-animate>
+        <h3 style="margin-top:0">联系方式</h3>
+        <div style="margin-top:12px" class="contact-grid">
+          <div class="contact-card">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div>
+                <div style="font-weight:700">邮箱</div>
+                <div class="muted">huangbowen@example.com</div>
+              </div>
+              <div>
+                <button class="copy" onclick="copyText('huangbowen@example.com')">复制</button>
+                <a style="margin-left:6px;color:var(--accent);font-weight:700;text-decoration:none" href="mailto:huangbowen@example.com">发邮件</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-card">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div>
+                <div style="font-weight:700">电话</div>
+                <div class="muted">+86 138 0000 0000</div>
+              </div>
+              <div>
+                <button class="copy" onclick="copyText('+86 138 0000 0000')">复制</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-card" style="grid-column:1 / -1;display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div style="font-weight:700">社交</div>
+              <div class="muted">GitHub · LinkedIn · 领英 / 可填入你的个人链接</div>
+            </div>
+            <div style="display:flex;gap:8px">
+              <a class="pill" href="#" onclick="alert('示例链接：请替换为你的真实地址')">查看 GitHub</a>
+              <a class="pill" href="#" style="background:#111827;color:#fff" onclick="alert('示例链接：请替换为你的真实地址')">LinkedIn</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <button class="to-top" id="toTop" title="回到顶部" aria-label="回到顶部" onclick="scrollToTop()">↑</button>
+
+  <script>
+    // 小工具：复制到剪贴板
+    function copyText(text){
+      if(navigator.clipboard){
+        navigator.clipboard.writeText(text).then(()=>{toast('已复制: ' + text)}, ()=>{alert('复制失败，请手动复制：' + text)});
+      }else{
+        const ta = document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();
+        try{document.execCommand('copy');toast('已复制: ' + text)}catch{alert('复制失败，请手动复制：' + text)}finally{ta.remove()}
+      }
+    }
+
+    // 简单通知（非阻塞）
+    function toast(msg){
+      const el = document.createElement('div');
+      el.textContent = msg;
+      el.style.position='fixed';el.style.left='50%';el.style.bottom='30px';
+      el.style.transform='translateX(-50%)';el.style.background='rgba(2,6,23,0.9)';
+      el.style.color='white';el.style.padding='8px 14px';el.style.borderRadius='10px';
+      el.style.zIndex=9999;el.style.fontSize='13px';
+      document.body.appendChild(el);
+      setTimeout(()=>{el.style.transition='all 250ms';el.style.opacity=0;el.style.transform='translateX(-50%) translateY(8px)';},1500);
+      setTimeout(()=>el.remove(),1800);
+    }
+
+    // Scroll reveal: IntersectionObserver
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){ e.target.classList.add('in-view') }
+      });
+    }, {threshold:0.12});
+
+    document.querySelectorAll('[data-animate], .card').forEach(el=>io.observe(el));
+
+    // Nav smooth scroll and active highlight
+    const links = document.querySelectorAll('.nav-link');
+    const sections = Array.from(links).map(a => document.getElementById(a.getAttribute('href').slice(1)));
+
+    links.forEach(a=>{
+      a.addEventListener('click', e=>{
+        e.preventDefault();
+        const id = a.getAttribute('href').slice(1);
+        document.getElementById(id).scrollIntoView({behavior:'smooth',block:'start'});
+      });
+    });
+
+    // Update active nav on scroll
+    const obsNav = new IntersectionObserver((entries)=>{
+      entries.forEach(entry=>{
+        const id = entry.target.id;
+        const link = document.querySelector('.nav-link[data-target="'+id+'"]');
+        if(entry.isIntersecting){
+          document.querySelectorAll('.nav-link').forEach(l=>l.classList.remove('active'));
+          if(link) link.classList.add('active');
+        }
+      });
+    }, {threshold:0.48});
+
+    sections.forEach(s=>obsNav.observe(s));
+
+    // Skills tabs
+    const tabs = document.querySelectorAll('.tab');
+    const panels = document.querySelectorAll('[data-panel]');
+    tabs.forEach(t=>{
+      t.addEventListener('click', ()=>{
+        tabs.forEach(x=>x.classList.remove('active'));
+        t.classList.add('active');
+        const name = t.getAttribute('data-tab');
+        panels.forEach(p=>{
+          if(p.getAttribute('data-panel') === name) p.style.display = ''; 
+          else p.style.display = 'none';
+          // trigger bars animation
+          p.querySelectorAll('.bar > i').forEach(i=>{
+            const w = i.style.width;
+            i.style.width = '0';
+            setTimeout(()=> i.style.width = w, 80);
+          });
+        });
+      });
+    });
+
+    // Back to top visibility
+    const toTop = document.getElementById('toTop');
+    window.addEventListener('scroll', ()=>{
+      if(window.scrollY > 420) toTop.style.display = 'block'; else toTop.style.display = 'none';
+    });
+
+    function scrollToTop(){ window.scrollTo({top:0,behavior:'smooth'}) }
+
+    // PDF download placeholder
+    function downloadPDF(){
+      toast('下载功能示例：请替换为你的 PDF 链接或生成接口');
+      // 可扩展：触发后端生成 PDF 或直接跳转至简历PDF
+    }
+
+    // 初次触发技能栏动画
+    window.addEventListener('load', ()=>{
+      document.querySelectorAll('.bar > i').forEach(i=>{ const w = i.style.width; i.style.width='0'; setTimeout(()=>i.style.width = w, 160); });
+    });
+
+    // Accessible focus styles for keyboard users
+    document.addEventListener('keyup', (e)=>{
+      if(e.key === 'Tab') document.body.classList.add('show-focus-outline');
+    });
+  </script>
+</body>
+</html>
