@@ -1,0 +1,13 @@
+{
+  "name": "huangbowen-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "数据驱动的个人作品集网站",
+  "scripts": {
+    "dev": "node --watch server.js",
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
